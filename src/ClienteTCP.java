@@ -5,7 +5,24 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClienteTCP {
+    public static final String ANSI_RESET="\u001B[0m";
+
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
     public static void main(String[] args) throws Exception {
+        int maxAttempts = 5; // número máximo de intentos permitidos
+        int numAttempts = 0; // número actual de intentos
+        System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
+        System.out.println(ANSI_PURPLE+"BIENVENIDO A WORDLE"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
+
+
         Socket clientSocket =null;
         BufferedReader inFromServer = null;
         DataOutputStream outToServer = null;
@@ -19,13 +36,20 @@ public class ClienteTCP {
 
         boolean connected = false;
 
-        while(true) {
-            System.out.println("Seleccione una opcion:");
-            System.out.println("0. conectar");
-            System.out.println("1. Jugar");
-            System.out.println("2. Salir");
 
+        while(true) {
+
+            System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
+
+            System.out.println("Seleccione una opcion:");
+            System.out.println("0. Conectar al servidor");
+            System.out.println("1. Jugar una partida");
+            System.out.println("2. Salir");
+            System.out.println("Opcion: ");
             int opcion=scanner.nextInt();
+
+            System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
+
             if (opcion==0){
                 if (!connected) {
                     clientSocket = new Socket("localhost", 8000);// Crear un objeto BufferedReader para leer datos del servidor
@@ -34,8 +58,10 @@ public class ClienteTCP {
                     outToServer = new DataOutputStream(clientSocket.getOutputStream());
 
                     connected =true;
+                    System.out.println(ANSI_BLUE+"Coneccion con exito"+ANSI_RESET);
+
                 }else {
-                    System.out.println("ya estas conectado");
+                    System.out.println(ANSI_BLUE+"ya estas conectado"+ANSI_RESET);
 
 
                 }
@@ -47,8 +73,8 @@ public class ClienteTCP {
                 if (connected){
                     int wordLength = Integer.parseInt(inFromServer.readLine());
                     System.out.println("la palabra tiene   "+wordLength+"   Letras  -----");
-
                     while (true){//inicio
+
                         System.out.println("\nAdivina una letra o la palabra: ");
 
                         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -59,12 +85,7 @@ public class ClienteTCP {
 
 
 
-                        if(serverResponse.startsWith("ganaste")) {
-                            System.out.println("ganaste");
-                            break;
 
-
-                        }
 
 
 
@@ -81,7 +102,12 @@ public class ClienteTCP {
                 break;
 
 
+            }else {
+                System.out.println("Opcion no valida");
             }
+
+
+
 
         }
 

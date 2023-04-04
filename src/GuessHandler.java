@@ -28,12 +28,7 @@ class GuessHandler {
 
         String serverResponse;
         if (guessIsCorrect) {
-            if (wordGuessedSoFar==chosenWord) {
-                serverResponse = "Ganaste! a la primera La palabra era " + chosenWord;
-            } else {
-
-                System.out.println(serverResponse = "Correcto! " + wordGuessedSoFar+"   Has ganado, la palabra era    "+ chosenWord);
-            }
+                serverResponse = "Correcto! la palanra era:  " + wordGuessedSoFar;
         } else {
             serverResponse = "Incorrecto. " + wordGuessedSoFar;
 
@@ -41,6 +36,7 @@ class GuessHandler {
         }
 
         return serverResponse;
+
     }
 
     public boolean isWordGuessed() {

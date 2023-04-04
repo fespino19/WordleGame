@@ -6,50 +6,67 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServidorTCP {
+
+
+
+    private static final int PORT = 8000;
+    private static final int MAX_ATTEMPTS = 5;
+    private static final String[] words = {"melon", "fresa", "mango", "peras","pipas"};
+
     public static void main(String[] args) throws Exception {
-        ServerSocket welcomeSocket = new ServerSocket(8000);
-        System.out.println("Waiting for client connection...");
-        Socket connectionSocket = welcomeSocket.accept();
-        System.out.println("Client connected: " +connectionSocket);
+
+
+        try {
+            ServerSocket welcomeSocket = new ServerSocket(PORT);
+
+            System.out.println("Wordle server started on port " + PORT);
+            System.out.println("Waiting for client connection...");
+
+            Socket connectionSocket = welcomeSocket.accept();
+            System.out.println("Client connected: " +connectionSocket);
+
+            while (true){
+
+                //ServerSocket welcomeSocket = new ServerSocket(PORT);
+
+
+                String chosenWord = words[(int)(Math.random()*words.length)];
+                DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                GuessHandler guessHandler = new GuessHandler(chosenWord);
+                outToClient.writeBytes(chosenWord.length() + "\n");
+
+                //boolean playing = true;
 
 
 
 
-        String[] words = {"hello", "world", "miami", "table","award"};
-        String chosenWord = words[(int)(Math.random()*words.length)];
+                while (!guessHandler.isWordGuessed()){
+                    //int att =0;
 
 
 
 
 
-
-        DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-
-        BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-
-        GuessHandler guessHandler = new GuessHandler(chosenWord);
-
-        outToClient.writeBytes(chosenWord.length() + "\n");
+                    String clientGuess = inFromClient.readLine();
+                    System.out.println("Received guess: " + clientGuess);
 
 
 
-        while(!guessHandler.isWordGuessed()) {
+                    String serverResponse = guessHandler.handleGuess(clientGuess);
+                    outToClient.writeBytes(serverResponse + "\n");
+                    System.out.println("Server envia a cliente: " + serverResponse);
 
 
-            String clientGuess = inFromClient.readLine();
-            System.out.println("Received guess: " + clientGuess);
+                }
+                outToClient.close();
+                inFromClient.close();
+                //connectionSocket.close();
+                welcomeSocket.close();
 
 
-            String serverResponse = guessHandler.handleGuess(clientGuess);
-            outToClient.writeBytes(serverResponse + "\n");
-            System.out.println("Server responde cl cliente con: " + serverResponse);
+            }
+        }catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
 
-        }
-
-        outToClient.close();
-        inFromClient.close();
-        connectionSocket.close();
-        welcomeSocket.close();
-    }
-}
-
+        }}}
