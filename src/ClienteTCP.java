@@ -20,7 +20,7 @@ public class ClienteTCP {
         boolean connected = false;
 
         while(true) {
-            System.out.println("Seleccione una opci贸n:");
+            System.out.println("Seleccione una opcion:");
             System.out.println("0. conectar");
             System.out.println("1. Jugar");
             System.out.println("2. Salir");
