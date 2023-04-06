@@ -5,19 +5,18 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClienteTCP {
-    public static final String ANSI_RESET="\u001B[0m";
-
+    public static final String ANSI_WHITE = "\u001B[37m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RESET="\u001B[0m";
+
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
     public static void main(String[] args) throws Exception {
-        int maxAttempts = 5; // número máximo de intentos permitidos
-        int numAttempts = 0; // número actual de intentos
+
         System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
         System.out.println(ANSI_PURPLE+"BIENVENIDO A WORDLE"+ANSI_RESET);
         System.out.println(ANSI_CYAN+"----------------------"+ANSI_RESET);
@@ -35,6 +34,7 @@ public class ClienteTCP {
 
 
         boolean connected = false;
+
 
 
         while(true) {
@@ -72,29 +72,54 @@ public class ClienteTCP {
             else if (opcion==1){
                 if (connected){
                     int wordLength = Integer.parseInt(inFromServer.readLine());
-                    System.out.println("la palabra tiene   "+wordLength+"   Letras  -----");
-                    while (true){//inicio
+                    System.out.println("-------JUGANDO A WORDLE-------");
 
-                        System.out.println("\nAdivina una letra o la palabra: ");
+                    System.out.println(ANSI_BLACK+"La palabra Tiene  "+wordLength+" Letras "+ANSI_RESET);
+                    int intentos = 0;
+                    String serverResponse;
+                    boolean palabra=true;
+
+                    while (intentos<6){//inicio
+                        System.out.println(ANSI_CYAN+"---------------------------------------"+ANSI_RESET);
+
+                        System.out.println("\nAdivina la palabra secreta: ");
 
                         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
                         String clientGuess = inFromUser.readLine();
                         outToServer.writeBytes(clientGuess + "\n");
-                        String serverResponse = inFromServer.readLine();
+                         serverResponse = inFromServer.readLine();
                         System.out.println(serverResponse);
+                        if(serverResponse.startsWith("Correcto")){
+                            System.out.println("Ganaste en hora buena");
+
+                                break;
+
+                        }
 
 
+                        intentos++;
+                        System.out.println(ANSI_PURPLE+"Intentos  "+ANSI_RESET+intentos);
+                        System.out.println(ANSI_CYAN+"---------------------------------------"+ANSI_RESET);
+
+                        /* if (serverResponse.startsWith(clientGuess)){
+                           System.out.println("ganasteeeeeeeeeee");
+                           System.exit(0);
+
+                        }*/
+                        if (intentos==6){
+                            System.out.println("Lo siento, has alcanzado el límite de intentos. El juego ha terminado. ");
+                            clientSocket.close();
+                            System.exit(0);
+                            //break;
+                            //final whild
+                        }
 
 
-
-
-
-                    }//final whild
+                    }
                 }else {
                     System.out.println("Debes conectarte al servidor primero");
 
                 }
-
 
 
             } else if (opcion==2) {
@@ -115,6 +140,7 @@ public class ClienteTCP {
         outToServer.close();
         inFromServer.close();
         clientSocket.close();
+
 
     }}
 
