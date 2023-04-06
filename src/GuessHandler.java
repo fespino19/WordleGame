@@ -8,14 +8,12 @@ class GuessHandler {
 
     private String chosenWord;
     private boolean[] wordGuessed;
-    private int maxAttempts;
-    private int numAttempts;
+
 
     public GuessHandler(String chosenWord) {
         this.chosenWord = chosenWord;
         this.wordGuessed = new boolean[chosenWord.length()];
-        //this.maxAttempts = maxAttempts;
-       // this.numAttempts = 0;
+
     }
 
     public String handleGuess(String guess) {
@@ -44,16 +42,13 @@ class GuessHandler {
 
 
 
-                //return serverResponse;
+
         } else {
-           // numAttempts++;
 
-            //serverResponse = "Incorrecto. " + wordGuessedSoFar;
+
+
             serverResponse="Incorrecto. " + wordGuessedSoFar+":  Vuelve a intentarlo ";
-                //if (numAttempts==maxAttempts){
-                   // serverResponse = "Lo siento, has llegado al límite de intentos permitidos. La palabra era: " + chosenWord + ". El servidor se cerrará.";
 
-               // }
 
 
 

@@ -8,7 +8,6 @@ import java.net.Socket;
 public class ServidorTCP {
     private boolean acertado = true;
     private static final int PORT = 8000;
-    private static final int MAX_ATTEMPTS = 5;
     private static final String[] words = {"melon", "fresa", "mango", "peras","pipas"};
     public static void main(String[] args) throws Exception {
 

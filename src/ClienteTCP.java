@@ -27,10 +27,7 @@ public class ClienteTCP {
         DataOutputStream outToServer = null;
 
         Scanner scanner=new Scanner(System.in);
-//        System.out.println("Seleccione una opci贸n:");
-//        System.out.println("0. conectar");
-//        System.out.println("1. Jugar");
-//        System.out.println("2. Salir");
+
 
 
         boolean connected = false;
