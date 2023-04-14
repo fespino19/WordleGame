@@ -6,7 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServidorTCP {
-    private boolean acertado = true;
     private static final int PORT = 8000;
     private static final String[] words = {"melon", "fresa", "mango", "peras","pipas"};
     public static void main(String[] args) throws Exception {
@@ -19,7 +18,7 @@ public class ServidorTCP {
             System.out.println("Waiting for client connection...");
 
             Socket connectionSocket = welcomeSocket.accept();
-            System.out.println("Client connected: " +connectionSocket);
+            System.out.println("Cliente connectado: " +connectionSocket);
 
             while (true){
 
@@ -33,10 +32,11 @@ public class ServidorTCP {
 
 
 
+
                 while (!guessHandler.isWordGuessed()){
 
                   String clientGuess = inFromClient.readLine();
-                    System.out.println("Received guess: " + clientGuess);
+                    System.out.println("Recive La palabra : " + clientGuess);
 
                     String serverResponse = guessHandler.handleGuess(clientGuess);
                     outToClient.writeBytes(serverResponse + "\n");
